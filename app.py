@@ -11,6 +11,10 @@ UPLOAD_FOLDER_MOVIES = 'files/' + \
     os.getenv('MOVIES_FOLDER')  # 'files/PLEX_movies'
 UPLOAD_FOLDER_SERIES = 'files/' + \
     os.getenv('SERIES_FOLDER')  # 'files/PLEX_series'
+UPLOAD_FOLDER_MOVIES_KIDS = 'files/' + \
+    os.getenv('MOVIES_KIDS_FOLDER')  # 'files/PLEX_movies'
+UPLOAD_FOLDER_SERIES_KIDS = 'files/' + \
+    os.getenv('SERIES_KIDS_FOLDER')  # 'files/PLEX_series'
 ALLOWED_EXTENSIONS = {'torrent'}
 
 if not os.path.exists(UPLOAD_FOLDER_MOVIES):
@@ -24,6 +28,8 @@ app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['UPLOAD_FOLDER_MOVIES'] = UPLOAD_FOLDER_MOVIES
 app.config['UPLOAD_FOLDER_SERIES'] = UPLOAD_FOLDER_SERIES
+app.config['UPLOAD_FOLDER_MOVIES_KIDS'] = UPLOAD_FOLDER_MOVIES_KIDS
+app.config['UPLOAD_FOLDER_SERIES_KIDS'] = UPLOAD_FOLDER_SERIES_KIDS
 
 
 def allowed_file(filename):
@@ -86,6 +92,52 @@ def upload_series():
             filename = secure_filename(file.filename)
             file.save(os.path.join(
                 app.config['UPLOAD_FOLDER_SERIES'], filename))
+            return Response(status=200)
+    return Response(status=403)
+
+
+@app.route('/movies-kids', methods=['POST'])
+@auth.login_required
+def upload_movies():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return Response(status=403)
+        file = request.files['file']
+        app.logger.info(file.filename)
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return Response(status=403)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(
+                app.config['UPLOAD_FOLDER_MOVIES_KIDS'], filename))
+            return Response(status=200)
+    return Response(status=403)
+
+
+@app.route('/series-kids', methods=['POST'])
+@auth.login_required
+def upload_series():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return Response(status=403)
+        file = request.files['file']
+        app.logger.info(file.filename)
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return Response(status=403)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(
+                app.config['UPLOAD_FOLDER_SERIES_KIDS'], filename))
             return Response(status=200)
     return Response(status=403)
 
