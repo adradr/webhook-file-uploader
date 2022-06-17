@@ -21,6 +21,10 @@ if not os.path.exists(UPLOAD_FOLDER_MOVIES):
     os.makedirs(UPLOAD_FOLDER_MOVIES)
 if not os.path.exists(UPLOAD_FOLDER_SERIES):
     os.makedirs(UPLOAD_FOLDER_SERIES)
+if not os.path.exists(UPLOAD_FOLDER_MOVIES_KIDS):
+    os.makedirs(UPLOAD_FOLDER_MOVIES_KIDS)
+if not os.path.exists(UPLOAD_FOLDER_SERIES_KIDS):
+    os.makedirs(UPLOAD_FOLDER_SERIES_KIDS)
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
