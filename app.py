@@ -98,7 +98,7 @@ def upload_series():
 
 @app.route('/movies-kids', methods=['POST'])
 @auth.login_required
-def upload_movies():
+def upload_movies_kids():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -121,7 +121,7 @@ def upload_movies():
 
 @app.route('/series-kids', methods=['POST'])
 @auth.login_required
-def upload_series():
+def upload_series_kids():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
